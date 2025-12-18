@@ -112,7 +112,7 @@ namespace MyCharacterMod
     }
 
 
-    // 请确保 BepInPlugin 的 GUID 是唯一的
+    // 请确保 BepInPlugin 的 GUID 是唯一的 1
     [BepInPlugin("com.yourname.bulbulmod", "My Heroine Mod", "1.0.0")]
     public class Plugin : BaseUnityPlugin
     {
@@ -154,7 +154,7 @@ namespace MyCharacterMod
                 return;
             }
 
-            // 加载你的预制体 (名字要是你打包时的Prefab名字)
+            // 加载你的预制体 (名字要是你打包时的Prefab名字) 
             myCustomPrefab = myBundle.LoadAsset<GameObject>("MyAvatar");
 
             // 2. 启动 Harmony 挂钩
