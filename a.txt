@@ -1,0 +1,397 @@
+Folder PATH listing for volume New Volume
+Volume serial number is 1AEC-897E
+D:.
+©¦  .gitattributes
+©¦  .gitignore
+©¦  a.txt
+©¦  ChangeModel.sln
+©¦  
+©À©¤ChangeModel
+©¦  ©¦  Cavi.AppearanceMod.csproj
+©¦  ©¦  Plugin.cs
+©¦  ©¦  
+©¦  ©À©¤bin
+©¦  ©¦  ©À©¤Debug
+©¦  ©¦  ©¦  ©¸©¤netstandard2.0
+©¦  ©¦  ©¸©¤Release
+©¦  ©¦      ©À©¤netstandard2.0
+©¦  ©¦      ©¸©¤netstandard2.1
+©¦  ©¦              0Harmony.dll
+©¦  ©¦              0Harmony.xml
+©¦  ©¦              Accessibility.dll
+©¦  ©¦              Assembly-CSharp-firstpass.dll
+©¦  ©¦              Assembly-CSharp.dll
+©¦  ©¦              AudioManager.dll
+©¦  ©¦              BepInEx.dll
+©¦  ©¦              BepInEx.xml
+©¦  ©¦              ChangeModel.deps.json
+©¦  ©¦              ChangeModel.dll
+©¦  ©¦              ChangeModel.pdb
+©¦  ©¦              com.rlabrecque.steamworks.net.dll
+©¦  ©¦              DistantLands.Cozy.Runtime.dll
+©¦  ©¦              DOTween.dll
+©¦  ©¦              DOTweenPro.dll
+©¦  ©¦              FastEnum.dll
+©¦  ©¦              Febucci.Attributes.Runtime.dll
+©¦  ©¦              Febucci.TextAnimator.Runtime.dll
+©¦  ©¦              Microsoft.Bcl.AsyncInterfaces.dll
+©¦  ©¦              Microsoft.Bcl.TimeProvider.dll
+©¦  ©¦              Mono.Cecil.dll
+©¦  ©¦              Mono.Posix.dll
+©¦  ©¦              Mono.WebBrowser.dll
+©¦  ©¦              MonoMod.RuntimeDetour.dll
+©¦  ©¦              MonoMod.RuntimeDetour.xml
+©¦  ©¦              MonoMod.Utils.dll
+©¦  ©¦              MonoMod.Utils.xml
+©¦  ©¦              ObservableCollections.dll
+©¦  ©¦              ObservableCollections.R3.dll
+©¦  ©¦              Ookii.Dialogs.WinForms.dll
+©¦  ©¦              R3.dll
+©¦  ©¦              R3.Unity.dll
+©¦  ©¦              R3.Unity.TextMeshPro.dll
+©¦  ©¦              StandaloneFileBrowser.dll
+©¦  ©¦              StompyRobot.SRDebugger.dll
+©¦  ©¦              StompyRobot.SRF.dll
+©¦  ©¦              System.ComponentModel.Annotations.dll
+©¦  ©¦              System.Configuration.dll
+©¦  ©¦              System.Design.dll
+©¦  ©¦              System.Drawing.Design.dll
+©¦  ©¦              System.Runtime.CompilerServices.Unsafe.dll
+©¦  ©¦              System.Runtime.Serialization.Formatters.Soap.dll
+©¦  ©¦              System.Security.dll
+©¦  ©¦              System.Threading.Channels.dll
+©¦  ©¦              System.Windows.Forms.dll
+©¦  ©¦              TagLibSharp.dll
+©¦  ©¦              UniTask.dll
+©¦  ©¦              UniTask.DOTween.dll
+©¦  ©¦              UniTask.Linq.dll
+©¦  ©¦              Unity.Addressables.dll
+©¦  ©¦              Unity.Burst.dll
+©¦  ©¦              Unity.Burst.Unsafe.dll
+©¦  ©¦              Unity.Collections.dll
+©¦  ©¦              Unity.Collections.LowLevel.ILSupport.dll
+©¦  ©¦              Unity.Mathematics.dll
+©¦  ©¦              Unity.Profiling.Core.dll
+©¦  ©¦              Unity.RenderPipeline.Universal.ShaderLibrary.dll
+©¦  ©¦              Unity.RenderPipelines.Core.Runtime.dll
+©¦  ©¦              Unity.RenderPipelines.Universal.Runtime.dll
+©¦  ©¦              Unity.ResourceManager.dll
+©¦  ©¦              Unity.TextMeshPro.dll
+©¦  ©¦              Unity.Timeline.dll
+©¦  ©¦              Unity.VisualScripting.Core.dll
+©¦  ©¦              UnityEngine.AccessibilityModule.dll
+©¦  ©¦              UnityEngine.AIModule.dll
+©¦  ©¦              UnityEngine.AndroidJNIModule.dll
+©¦  ©¦              UnityEngine.AnimationModule.dll
+©¦  ©¦              UnityEngine.ARModule.dll
+©¦  ©¦              UnityEngine.AssetBundleModule.dll
+©¦  ©¦              UnityEngine.AudioModule.dll
+©¦  ©¦              UnityEngine.ClothModule.dll
+©¦  ©¦              UnityEngine.ClusterInputModule.dll
+©¦  ©¦              UnityEngine.ClusterRendererModule.dll
+©¦  ©¦              UnityEngine.ContentLoadModule.dll
+©¦  ©¦              UnityEngine.CoreModule.dll
+©¦  ©¦              UnityEngine.CrashReportingModule.dll
+©¦  ©¦              UnityEngine.DirectorModule.dll
+©¦  ©¦              UnityEngine.dll
+©¦  ©¦              UnityEngine.DSPGraphModule.dll
+©¦  ©¦              UnityEngine.GameCenterModule.dll
+©¦  ©¦              UnityEngine.GridModule.dll
+©¦  ©¦              UnityEngine.ImageConversionModule.dll
+©¦  ©¦              UnityEngine.IMGUIModule.dll
+©¦  ©¦              UnityEngine.InputLegacyModule.dll
+©¦  ©¦              UnityEngine.InputModule.dll
+©¦  ©¦              UnityEngine.JSONSerializeModule.dll
+©¦  ©¦              UnityEngine.LocalizationModule.dll
+©¦  ©¦              UnityEngine.NVIDIAModule.dll
+©¦  ©¦              UnityEngine.ParticleSystemModule.dll
+©¦  ©¦              UnityEngine.PerformanceReportingModule.dll
+©¦  ©¦              UnityEngine.Physics2DModule.dll
+©¦  ©¦              UnityEngine.PhysicsModule.dll
+©¦  ©¦              UnityEngine.PropertiesModule.dll
+©¦  ©¦              UnityEngine.ScreenCaptureModule.dll
+©¦  ©¦              UnityEngine.SharedInternalsModule.dll
+©¦  ©¦              UnityEngine.SpriteMaskModule.dll
+©¦  ©¦              UnityEngine.SpriteShapeModule.dll
+©¦  ©¦              UnityEngine.StreamingModule.dll
+©¦  ©¦              UnityEngine.SubsystemsModule.dll
+©¦  ©¦              UnityEngine.TerrainModule.dll
+©¦  ©¦              UnityEngine.TerrainPhysicsModule.dll
+©¦  ©¦              UnityEngine.TextCoreFontEngineModule.dll
+©¦  ©¦              UnityEngine.TextCoreTextEngineModule.dll
+©¦  ©¦              UnityEngine.TextRenderingModule.dll
+©¦  ©¦              UnityEngine.TilemapModule.dll
+©¦  ©¦              UnityEngine.TLSModule.dll
+©¦  ©¦              UnityEngine.UI.dll
+©¦  ©¦              UnityEngine.UIElementsModule.dll
+©¦  ©¦              UnityEngine.UIModule.dll
+©¦  ©¦              UnityEngine.UnityAnalyticsCommonModule.dll
+©¦  ©¦              UnityEngine.UnityAnalyticsModule.dll
+©¦  ©¦              UnityEngine.UnityConnectModule.dll
+©¦  ©¦              UnityEngine.UnityCurlModule.dll
+©¦  ©¦              UnityEngine.UnityWebRequestAssetBundleModule.dll
+©¦  ©¦              UnityEngine.UnityWebRequestAudioModule.dll
+©¦  ©¦              UnityEngine.UnityWebRequestModule.dll
+©¦  ©¦              UnityEngine.UnityWebRequestTextureModule.dll
+©¦  ©¦              UnityEngine.UnityWebRequestWWWModule.dll
+©¦  ©¦              UnityEngine.VehiclesModule.dll
+©¦  ©¦              UnityEngine.VFXModule.dll
+©¦  ©¦              UnityEngine.VideoModule.dll
+©¦  ©¦              UnityEngine.VirtualTexturingModule.dll
+©¦  ©¦              UnityEngine.VRModule.dll
+©¦  ©¦              UnityEngine.WindModule.dll
+©¦  ©¦              UnityEngine.XRModule.dll
+©¦  ©¦              VContainer.dll
+©¦  ©¦              
+©¦  ©À©¤Components
+©¦  ©À©¤obj
+©¦  ©¦  ©¦  Cavi.AppearanceMod.csproj.nuget.dgspec.json
+©¦  ©¦  ©¦  Cavi.AppearanceMod.csproj.nuget.g.props
+©¦  ©¦  ©¦  Cavi.AppearanceMod.csproj.nuget.g.targets
+©¦  ©¦  ©¦  ChangeModel.csproj.nuget.dgspec.json
+©¦  ©¦  ©¦  ChangeModel.csproj.nuget.g.props
+©¦  ©¦  ©¦  ChangeModel.csproj.nuget.g.targets
+©¦  ©¦  ©¦  project.assets.json
+©¦  ©¦  ©¦  project.nuget.cache
+©¦  ©¦  ©¦  
+©¦  ©¦  ©À©¤Debug
+©¦  ©¦  ©¦  ©¸©¤netstandard2.0
+©¦  ©¦  ©¦          .NETStandard,Version=v2.0.AssemblyAttributes.cs
+©¦  ©¦  ©¦          ChangeModel.AssemblyInfo.cs
+©¦  ©¦  ©¦          ChangeModel.AssemblyInfoInputs.cache
+©¦  ©¦  ©¦          ChangeModel.assets.cache
+©¦  ©¦  ©¦          ChangeModel.csproj.AssemblyReference.cache
+©¦  ©¦  ©¦          ChangeModel.GeneratedMSBuildEditorConfig.editorconfig
+©¦  ©¦  ©¦          
+©¦  ©¦  ©¸©¤Release
+©¦  ©¦      ©À©¤netstandard2.0
+©¦  ©¦      ©¦      .NETStandard,Version=v2.0.AssemblyAttributes.cs
+©¦  ©¦      ©¦      ChangeModel.AssemblyInfo.cs
+©¦  ©¦      ©¦      ChangeModel.AssemblyInfoInputs.cache
+©¦  ©¦      ©¦      ChangeModel.assets.cache
+©¦  ©¦      ©¦      ChangeModel.csproj.AssemblyReference.cache
+©¦  ©¦      ©¦      ChangeModel.csproj.CoreCompileInputs.cache
+©¦  ©¦      ©¦      ChangeModel.csproj.FileListAbsolute.txt
+©¦  ©¦      ©¦      ChangeModel.GeneratedMSBuildEditorConfig.editorconfig
+©¦  ©¦      ©¦      
+©¦  ©¦      ©¸©¤netstandard2.1
+©¦  ©¦              .NETStandard,Version=v2.1.AssemblyAttributes.cs
+©¦  ©¦              Cavi.AppearanceMod.AssemblyInfo.cs
+©¦  ©¦              Cavi.AppearanceMod.AssemblyInfoInputs.cache
+©¦  ©¦              Cavi.AppearanceMod.assets.cache
+©¦  ©¦              Cavi.AppearanceMod.csproj.AssemblyReference.cache
+©¦  ©¦              Cavi.AppearanceMod.GeneratedMSBuildEditorConfig.editorconfig
+©¦  ©¦              ChangeMo.E939C859.Up2Date
+©¦  ©¦              ChangeModel.AssemblyInfo.cs
+©¦  ©¦              ChangeModel.AssemblyInfoInputs.cache
+©¦  ©¦              ChangeModel.assets.cache
+©¦  ©¦              ChangeModel.csproj.AssemblyReference.cache
+©¦  ©¦              ChangeModel.csproj.CoreCompileInputs.cache
+©¦  ©¦              ChangeModel.csproj.FileListAbsolute.txt
+©¦  ©¦              ChangeModel.dll
+©¦  ©¦              ChangeModel.GeneratedMSBuildEditorConfig.editorconfig
+©¦  ©¦              ChangeModel.pdb
+©¦  ©¦              
+©¦  ©À©¤Patches
+©¦  ©¸©¤Utils
+©¸©¤SetSettings
+    ©¦  Class2.cs
+    ©¦  SetSettings.csproj
+    ©¦  
+    ©À©¤bin
+    ©¦  ©À©¤Debug
+    ©¦  ©¦  ©À©¤netstandard2.0
+    ©¦  ©¦  ©¸©¤netstandard2.1
+    ©¦  ©¸©¤Release
+    ©¦      ©À©¤netstandard2.0
+    ©¦      ©¸©¤netstandard2.1
+    ©¦              0Harmony.dll
+    ©¦              0Harmony.xml
+    ©¦              Accessibility.dll
+    ©¦              Assembly-CSharp-firstpass.dll
+    ©¦              Assembly-CSharp.dll
+    ©¦              AudioManager.dll
+    ©¦              BepInEx.dll
+    ©¦              BepInEx.xml
+    ©¦              ChangeModel.deps.json
+    ©¦              ChangeModel.dll
+    ©¦              ChangeModel.pdb
+    ©¦              com.rlabrecque.steamworks.net.dll
+    ©¦              DistantLands.Cozy.Runtime.dll
+    ©¦              DOTween.dll
+    ©¦              DOTweenPro.dll
+    ©¦              FastEnum.dll
+    ©¦              Febucci.Attributes.Runtime.dll
+    ©¦              Febucci.TextAnimator.Runtime.dll
+    ©¦              Microsoft.Bcl.AsyncInterfaces.dll
+    ©¦              Microsoft.Bcl.TimeProvider.dll
+    ©¦              Mono.Cecil.dll
+    ©¦              Mono.Posix.dll
+    ©¦              Mono.WebBrowser.dll
+    ©¦              MonoMod.RuntimeDetour.dll
+    ©¦              MonoMod.RuntimeDetour.xml
+    ©¦              MonoMod.Utils.dll
+    ©¦              MonoMod.Utils.xml
+    ©¦              ObservableCollections.dll
+    ©¦              ObservableCollections.R3.dll
+    ©¦              Ookii.Dialogs.WinForms.dll
+    ©¦              R3.dll
+    ©¦              R3.Unity.dll
+    ©¦              R3.Unity.TextMeshPro.dll
+    ©¦              SetSettings.deps.json
+    ©¦              SetSettings.dll
+    ©¦              SetSettings.pdb
+    ©¦              StandaloneFileBrowser.dll
+    ©¦              StompyRobot.SRDebugger.dll
+    ©¦              StompyRobot.SRF.dll
+    ©¦              System.ComponentModel.Annotations.dll
+    ©¦              System.Configuration.dll
+    ©¦              System.Design.dll
+    ©¦              System.Drawing.Design.dll
+    ©¦              System.Runtime.CompilerServices.Unsafe.dll
+    ©¦              System.Runtime.Serialization.Formatters.Soap.dll
+    ©¦              System.Security.dll
+    ©¦              System.Threading.Channels.dll
+    ©¦              System.Windows.Forms.dll
+    ©¦              TagLibSharp.dll
+    ©¦              UniTask.dll
+    ©¦              UniTask.DOTween.dll
+    ©¦              UniTask.Linq.dll
+    ©¦              Unity.Addressables.dll
+    ©¦              Unity.Burst.dll
+    ©¦              Unity.Burst.Unsafe.dll
+    ©¦              Unity.Collections.dll
+    ©¦              Unity.Collections.LowLevel.ILSupport.dll
+    ©¦              Unity.Mathematics.dll
+    ©¦              Unity.Profiling.Core.dll
+    ©¦              Unity.RenderPipeline.Universal.ShaderLibrary.dll
+    ©¦              Unity.RenderPipelines.Core.Runtime.dll
+    ©¦              Unity.RenderPipelines.Universal.Runtime.dll
+    ©¦              Unity.ResourceManager.dll
+    ©¦              Unity.TextMeshPro.dll
+    ©¦              Unity.Timeline.dll
+    ©¦              Unity.VisualScripting.Core.dll
+    ©¦              UnityEngine.AccessibilityModule.dll
+    ©¦              UnityEngine.AIModule.dll
+    ©¦              UnityEngine.AndroidJNIModule.dll
+    ©¦              UnityEngine.AnimationModule.dll
+    ©¦              UnityEngine.ARModule.dll
+    ©¦              UnityEngine.AssetBundleModule.dll
+    ©¦              UnityEngine.AudioModule.dll
+    ©¦              UnityEngine.ClothModule.dll
+    ©¦              UnityEngine.ClusterInputModule.dll
+    ©¦              UnityEngine.ClusterRendererModule.dll
+    ©¦              UnityEngine.ContentLoadModule.dll
+    ©¦              UnityEngine.CoreModule.dll
+    ©¦              UnityEngine.CrashReportingModule.dll
+    ©¦              UnityEngine.DirectorModule.dll
+    ©¦              UnityEngine.dll
+    ©¦              UnityEngine.DSPGraphModule.dll
+    ©¦              UnityEngine.GameCenterModule.dll
+    ©¦              UnityEngine.GridModule.dll
+    ©¦              UnityEngine.ImageConversionModule.dll
+    ©¦              UnityEngine.IMGUIModule.dll
+    ©¦              UnityEngine.InputLegacyModule.dll
+    ©¦              UnityEngine.InputModule.dll
+    ©¦              UnityEngine.JSONSerializeModule.dll
+    ©¦              UnityEngine.LocalizationModule.dll
+    ©¦              UnityEngine.NVIDIAModule.dll
+    ©¦              UnityEngine.ParticleSystemModule.dll
+    ©¦              UnityEngine.PerformanceReportingModule.dll
+    ©¦              UnityEngine.Physics2DModule.dll
+    ©¦              UnityEngine.PhysicsModule.dll
+    ©¦              UnityEngine.PropertiesModule.dll
+    ©¦              UnityEngine.ScreenCaptureModule.dll
+    ©¦              UnityEngine.SharedInternalsModule.dll
+    ©¦              UnityEngine.SpriteMaskModule.dll
+    ©¦              UnityEngine.SpriteShapeModule.dll
+    ©¦              UnityEngine.StreamingModule.dll
+    ©¦              UnityEngine.SubsystemsModule.dll
+    ©¦              UnityEngine.TerrainModule.dll
+    ©¦              UnityEngine.TerrainPhysicsModule.dll
+    ©¦              UnityEngine.TextCoreFontEngineModule.dll
+    ©¦              UnityEngine.TextCoreTextEngineModule.dll
+    ©¦              UnityEngine.TextRenderingModule.dll
+    ©¦              UnityEngine.TilemapModule.dll
+    ©¦              UnityEngine.TLSModule.dll
+    ©¦              UnityEngine.UI.dll
+    ©¦              UnityEngine.UIElementsModule.dll
+    ©¦              UnityEngine.UIModule.dll
+    ©¦              UnityEngine.UnityAnalyticsCommonModule.dll
+    ©¦              UnityEngine.UnityAnalyticsModule.dll
+    ©¦              UnityEngine.UnityConnectModule.dll
+    ©¦              UnityEngine.UnityCurlModule.dll
+    ©¦              UnityEngine.UnityWebRequestAssetBundleModule.dll
+    ©¦              UnityEngine.UnityWebRequestAudioModule.dll
+    ©¦              UnityEngine.UnityWebRequestModule.dll
+    ©¦              UnityEngine.UnityWebRequestTextureModule.dll
+    ©¦              UnityEngine.UnityWebRequestWWWModule.dll
+    ©¦              UnityEngine.VehiclesModule.dll
+    ©¦              UnityEngine.VFXModule.dll
+    ©¦              UnityEngine.VideoModule.dll
+    ©¦              UnityEngine.VirtualTexturingModule.dll
+    ©¦              UnityEngine.VRModule.dll
+    ©¦              UnityEngine.WindModule.dll
+    ©¦              UnityEngine.XRModule.dll
+    ©¦              VContainer.dll
+    ©¦              
+    ©¸©¤obj
+        ©¦  ChangeModel.csproj.nuget.dgspec.json
+        ©¦  ChangeModel.csproj.nuget.g.props
+        ©¦  ChangeModel.csproj.nuget.g.targets
+        ©¦  project.assets.json
+        ©¦  project.nuget.cache
+        ©¦  SetSettings.csproj.nuget.dgspec.json
+        ©¦  SetSettings.csproj.nuget.g.props
+        ©¦  SetSettings.csproj.nuget.g.targets
+        ©¦  
+        ©À©¤Debug
+        ©¦  ©À©¤netstandard2.0
+        ©¦  ©¦      .NETStandard,Version=v2.0.AssemblyAttributes.cs
+        ©¦  ©¦      ChangeModel.AssemblyInfo.cs
+        ©¦  ©¦      ChangeModel.AssemblyInfoInputs.cache
+        ©¦  ©¦      ChangeModel.assets.cache
+        ©¦  ©¦      ChangeModel.csproj.AssemblyReference.cache
+        ©¦  ©¦      ChangeModel.GeneratedMSBuildEditorConfig.editorconfig
+        ©¦  ©¦      
+        ©¦  ©¸©¤netstandard2.1
+        ©¦          .NETStandard,Version=v2.1.AssemblyAttributes.cs
+        ©¦          SetSettings.AssemblyInfo.cs
+        ©¦          SetSettings.AssemblyInfoInputs.cache
+        ©¦          SetSettings.assets.cache
+        ©¦          SetSettings.csproj.AssemblyReference.cache
+        ©¦          SetSettings.GeneratedMSBuildEditorConfig.editorconfig
+        ©¦          
+        ©¸©¤Release
+            ©À©¤netstandard2.0
+            ©¦      .NETStandard,Version=v2.0.AssemblyAttributes.cs
+            ©¦      ChangeModel.AssemblyInfo.cs
+            ©¦      ChangeModel.AssemblyInfoInputs.cache
+            ©¦      ChangeModel.assets.cache
+            ©¦      ChangeModel.csproj.AssemblyReference.cache
+            ©¦      ChangeModel.csproj.CoreCompileInputs.cache
+            ©¦      ChangeModel.csproj.FileListAbsolute.txt
+            ©¦      ChangeModel.GeneratedMSBuildEditorConfig.editorconfig
+            ©¦      
+            ©¸©¤netstandard2.1
+                    .NETStandard,Version=v2.1.AssemblyAttributes.cs
+                    ChangeMo.E939C859.Up2Date
+                    ChangeModel.AssemblyInfo.cs
+                    ChangeModel.AssemblyInfoInputs.cache
+                    ChangeModel.assets.cache
+                    ChangeModel.csproj.AssemblyReference.cache
+                    ChangeModel.csproj.CoreCompileInputs.cache
+                    ChangeModel.csproj.FileListAbsolute.txt
+                    ChangeModel.dll
+                    ChangeModel.GeneratedMSBuildEditorConfig.editorconfig
+                    ChangeModel.pdb
+                    SetSettings.AssemblyInfo.cs
+                    SetSettings.AssemblyInfoInputs.cache
+                    SetSettings.assets.cache
+                    SetSettings.csproj.AssemblyReference.cache
+                    SetSettings.csproj.CoreCompileInputs.cache
+                    SetSettings.csproj.FileListAbsolute.txt
+                    SetSettings.dll
+                    SetSettings.GeneratedMSBuildEditorConfig.editorconfig
+                    SetSettings.pdb
+                    

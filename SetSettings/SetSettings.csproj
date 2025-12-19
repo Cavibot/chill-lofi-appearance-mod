@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /Y /I &quot;$(TargetDir)ChangeModel.dll&quot; &quot;D:\SteamLibrary\steamapps\common\Chill with You Lo-Fi Story Demo\BepInEx\plugins\MySkinMod&quot;" />
+    <Exec Command=":: 复制到 游戏正式版 &#xD;&#xA;:: xcopy /Y /I &quot;$(TargetDir)SetSettings.dll&quot; &quot;D:\SteamLibrary\steamapps\common\Chill with You Lo-Fi Story\BepInEx\plugins\Set&quot;" />
   </Target>
 
 </Project>

@@ -1,5 +1,6 @@
 ﻿using BepInEx;
 using Bulbul;
+using Cavi.AppearanceMod.Components;
 using HarmonyLib;
 using System.Collections.Generic;
 using System.IO;
@@ -9,13 +10,13 @@ using UnityEngine;
 
 namespace MyCharacterMod
 {
-    [BepInPlugin("com.yourname.bulbulmod", "My Heroine Mod", "1.0.4")] // 版本号微升
+    [BepInPlugin("com.cavi.bulbulmod", "Eku Skin Mod", "1.0.4")] // 版本号
 
 
     public class Plugin : BaseUnityPlugin
     {
         // ================= 配置区域 =================
-        public const bool ENABLE_GLASSES = true;
+        public static bool ENABLE_GLASSES = false;
         public const string MY_BODY_MESH_NAME = "Face";
         // ===========================================
 
@@ -29,11 +30,16 @@ namespace MyCharacterMod
         private void Awake()
         {
             Log = Logger;
-            string bundlePath = Path.Combine(Paths.PluginPath, "MySkinMod", "manuka_skin");
+            string modFolder = Path.Combine(Paths.PluginPath, "EkuSkinMod");
+            string bundlePath = Path.Combine(modFolder, "assets");
+            string configPath = Path.Combine(modFolder, "config.txt");
+
+            // 读取配置文件
+            LoadConfig(configPath);
 
             if (!File.Exists(bundlePath))
             {
-                Logger.LogError($"【Mod错误】找不到 AssetBundle文件: {bundlePath}");
+                Logger.LogError($"【Mod错误】缺失 AssetBundle文件: {bundlePath}");
                 return;
             }
 
@@ -44,10 +50,10 @@ namespace MyCharacterMod
                 return;
             }
 
-            myCustomPrefab = myBundle.LoadAsset<GameObject>("MyAvatar");
+            myCustomPrefab = myBundle.LoadAsset<GameObject>("Eku_Release");
             if (myCustomPrefab == null)
             {
-                Logger.LogError("【Mod错误】找不到预制体 'MyAvatar'！");
+                Logger.LogError("【Mod错误】找不到预制体 'Eku_Release'！");
                 return;
             }
 
@@ -55,18 +61,63 @@ namespace MyCharacterMod
             Logger.LogInfo("插件启动成功，等待角色生成...");
         }
 
+        private void LoadConfig(string configPath)
+        {
+            try
+            {
+                if (File.Exists(configPath))
+                {
+                    string[] lines = File.ReadAllLines(configPath);
+                    foreach (string line in lines)
+                    {
+                        string trimmed = line.Trim();
+                        if (trimmed.StartsWith("#") || string.IsNullOrWhiteSpace(trimmed))
+                            continue;
+
+                        if (trimmed.StartsWith("ENABLE_GLASSES="))
+                        {
+                            string value = trimmed.Substring("ENABLE_GLASSES=".Length).Trim().ToLower();
+                            ENABLE_GLASSES = value == "true" || value == "1";
+                            Logger.LogInfo($"【配置】眼镜设置: {ENABLE_GLASSES}");
+                        }
+                    }
+                }
+                else
+                {
+                    // 如果配置文件不存在，创建一个默认的
+                    string defaultConfig = "# Eku Skin Mod 配置文件\n" +
+                                         "# 是否显示眼镜 (true=显示, false=隐藏)\n" +
+                                         "ENABLE_GLASSES=false";
+                    File.WriteAllText(configPath, defaultConfig);
+                    Logger.LogInfo($"【配置】已创建默认配置文件: {configPath}");
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Logger.LogWarning($"【配置】读取配置文件失败，使用默认值: {ex.Message}");
+            }
+        }
+
         void Update()
         {
+            Log = Logger;
+            //Logger.LogInfo("【Mod日志】正在寻找...");
             if (_hasLoaded) return;
 
-            GameObject target = GameObject.Find("Character");
-            if (target != null)
+            // 1. 先找到最外层的 Character
+            GameObject root = GameObject.Find("Character");
+
+            if (root != null)
             {
-                if (target.transform.Find("Character/Character_Hips") != null)
+                // 2. 递归查找名字包含 "Hips" 的物体
+                // 这里的 true 表示即使物体是隐藏(Inactive)状态也要找，以防万一
+                Transform hips = root.GetComponentsInChildren<Transform>(true)
+                                     .FirstOrDefault(t => t.name == "Character_Hips");
+
+                if (hips != null)
                 {
-                    Plugin.Log.LogInfo("【Mod日志】Update 捕获角色，执行替换...");
-                    Hooks.ReplaceHeroineModel(target);
-                    // 注意：ReplaceHeroineModel 内部会把 _hasLoaded 设为 true
+                    Plugin.Log.LogInfo("【Mod日志】路径: " + hips.GetPath());
+                    Hooks.ReplaceHeroineModel(root);
                 }
             }
         }
@@ -110,7 +161,7 @@ namespace MyCharacterMod
             if (Plugin.myCustomPrefab == null) return;
             if (Plugin._hasLoaded) return; // 双重保险
 
-            Plugin.Log.LogInfo("【Mod日志】开始执行鸠占鹊巢计划...");
+            Plugin.Log.LogInfo("【Mod日志】开始执行...");
 
             // ================= 步骤 1: 锁定受害者 (原版 Face) =================
             var originalSMRs = gameCharacterRoot.GetComponentsInChildren<SkinnedMeshRenderer>();
@@ -212,7 +263,9 @@ namespace MyCharacterMod
 
             Object.Destroy(modInstance);
 
-            // ================= 步骤 3: 眼镜处理 =================
+            // ================= 步骤 3: 配饰处理 =================
+
+            // 处理眼镜
             Transform glassesTr = FindChildRecursive(gameCharacterRoot.transform, "m_Glasses");
             if (glassesTr != null)
             {
@@ -222,6 +275,21 @@ namespace MyCharacterMod
                     glassesTr.localPosition = new Vector3(-0.008f, 0.008f, 0.012f);
                     glassesTr.localScale = Vector3.one * 1.29f; // 简写
                 }
+                else
+                {
+                    glassesTr.localPosition = new Vector3(99f, 99f, 99f);
+                }
+            }
+
+            // TODO: 确定耳机位置而不是直接隐藏
+            // 临时禁用耳机
+            Transform headphonesTr = FindChildRecursive(gameCharacterRoot.transform, "m_Headphone_cat");
+            if (headphonesTr != null)
+            {
+                headphonesTr.gameObject.SetActive(Plugin.ENABLE_GLASSES);
+
+                headphonesTr.localPosition = new Vector3(99f, 99f, 99f);
+
             }
             // ================= 步骤 4: 添加形态键同步组件 =================
             // 找到注入后的 Face 组件
@@ -232,8 +300,8 @@ namespace MyCharacterMod
             {
                 var linker = gameCharacterRoot.AddComponent<BlendShapeLinker>();
                 linker.originalSMR = finalFaceSMR;
-                linker.myNewSMR = finalFaceSMR; 
-                //linker.globalMultiplier = 1.5f;
+                linker.myNewSMR = finalFaceSMR;
+
                 Plugin.Log.LogInfo("【Mod日志】已添加 BlendShapeLinker 组件");
             }
             else
@@ -261,92 +329,108 @@ namespace MyCharacterMod
 
 
     // TODO: 需要重新整理
-    public class BlendShapeLinker : MonoBehaviour
+    //public class BlendShapeLinker : MonoBehaviour
+    //{
+    //    public SkinnedMeshRenderer originalSMR;
+    //    public SkinnedMeshRenderer myNewSMR;
+
+    //    // 全局强度系数 
+    //    public float globalMultiplier = 1.0f;
+    //    public float mouthMultiplier = 0.4f;
+    //    public float mouthThreshold = 40f;
+    //    public float preserveKeysMultiplier = 1.0f;
+
+    //    // 缓存索引映射
+    //    private Dictionary<int, int> indexMap = new Dictionary<int, int>();
+
+    //    // 【白名单】这些形态键必须保持 1.0 
+    //    private HashSet<string> preserveKeys = new HashSet<string>
+    //{
+    //    "blendShape1.Eye_blink",
+    //};
+
+    //    void Start()
+    //    {
+    //        Plugin.Log.LogInfo("【BlendShapeLinker】初始化形态键映射...");
+    //        if (originalSMR == null || myNewSMR == null) return;
+    //        var originalMesh = originalSMR.sharedMesh;
+    //        var newMesh = myNewSMR.sharedMesh;
+
+    //        for (int i = 0; i < originalMesh.blendShapeCount; i++)
+    //        {
+    //            string originalName = originalMesh.GetBlendShapeName(i);
+    //            int newIndex = newMesh.GetBlendShapeIndex(originalName);
+
+    //            if (newIndex != -1) indexMap[i] = newIndex;
+    //        }
+    //    }
+
+    //    void LateUpdate()
+    //    {
+    //        if (originalSMR == null || myNewSMR == null) return;
+
+    //        foreach (var pair in indexMap)
+    //        {
+    //            int oldIndex = pair.Key;
+    //            int newIndex = pair.Value;
+
+    //            // 1. 读取原版权重
+    //            float originalWeight = originalSMR.GetBlendShapeWeight(oldIndex);
+
+    //            // 2. 计算新权重
+    //            float finalWeight = originalWeight;
+
+    //            string keyName = myNewSMR.sharedMesh.GetBlendShapeName(newIndex);
+
+    //            // 如果不是眨眼，也不是特殊表情，就通过系数削弱它
+    //            if (!preserveKeys.Contains(keyName))
+    //            {
+    //                // 还可以针对 Mouth 开头的做更狠的削弱
+    //                if (keyName.Contains("Mouth"))
+    //                {
+    //                    finalWeight *= mouthMultiplier;
+    //                    if (originalWeight < mouthThreshold || keyName.Contains("_smile2") || keyName.Contains("_n"))
+    //                    {
+    //                        // 如果原版数值小于 mouthThreshold，直接忽略，强制闭嘴
+    //                        finalWeight = 0f;
+    //                    }
+    //                    //if (originalWeight > 0)
+    //                    //Plugin.Log.LogInfo($"【BlendShapeLinker】削弱嘴巴表情: {keyName} 原 {originalWeight} -> {finalWeight}");
+    //                }
+    //                else
+    //                {
+    //                    finalWeight *= globalMultiplier; // 其他部位 50%
+    //                                                     //if (originalWeight > 0)
+    //                                                     //Plugin.Log.LogInfo($"【BlendShapeLinker】削弱其他表情: {keyName} 原 {originalWeight} -> {finalWeight}");
+    //                }
+    //            }
+    //            else
+    //            {
+    //                finalWeight *= preserveKeysMultiplier; // 眨眼等保留表情 100%
+    //                                                       //if (originalWeight > 0)
+    //                                                       //Plugin.Log.LogInfo($" 【BlendShapeLinker】调整保留表情: {keyName} 原 {originalWeight} -> {finalWeight}");
+    //            }
+
+
+
+    //            // 3. 应用
+    //            myNewSMR.SetBlendShapeWeight(newIndex, finalWeight);
+    //        }
+    //    }
+    //}
+
+    public static class TransformExtensions
     {
-        public SkinnedMeshRenderer originalSMR; 
-        public SkinnedMeshRenderer myNewSMR;   
-
-        // 全局强度系数 
-        public float globalMultiplier = 1.0f;
-        public float mouthMultiplier = 0.4f;
-        public float mouthThreshold = 40f;
-        public float preserveKeysMultiplier = 1.0f;
-
-        // 缓存索引映射
-        private Dictionary<int, int> indexMap = new Dictionary<int, int>();
-
-        // 【白名单】这些形态键必须保持 1.0 
-        private HashSet<string> preserveKeys = new HashSet<string>
-    {
-        "blendShape1.Eye_blink",
-    };
-
-        void Start()
+        public static string GetPath(this Transform current)
         {
-            Plugin.Log.LogInfo("【BlendShapeLinker】初始化形态键映射...");
-            if (originalSMR == null || myNewSMR == null) return;
-            var originalMesh = originalSMR.sharedMesh;
-            var newMesh = myNewSMR.sharedMesh;
-
-            for (int i = 0; i < originalMesh.blendShapeCount; i++)
+            if (current == null) return string.Empty;
+            string path = current.name;
+            while (current.parent != null)
             {
-                string originalName = originalMesh.GetBlendShapeName(i);
-                int newIndex = newMesh.GetBlendShapeIndex(originalName);
-
-                if (newIndex != -1) indexMap[i] = newIndex;
+                current = current.parent;
+                path = current.name + "/" + path;
             }
-        }
-
-        void LateUpdate()
-        {
-            if (originalSMR == null || myNewSMR == null) return;
-
-            foreach (var pair in indexMap)
-            {
-                int oldIndex = pair.Key;
-                int newIndex = pair.Value;
-
-                // 1. 读取原版权重
-                float originalWeight = originalSMR.GetBlendShapeWeight(oldIndex);
-
-                // 2. 计算新权重
-                float finalWeight = originalWeight;
-
-                string keyName = myNewSMR.sharedMesh.GetBlendShapeName(newIndex);
-
-                // 如果不是眨眼，也不是特殊表情，就通过系数削弱它
-                if (!preserveKeys.Contains(keyName))
-                {
-                    // 还可以针对 Mouth 开头的做更狠的削弱
-                    if (keyName.Contains("Mouth"))
-                    {
-                        finalWeight *= mouthMultiplier;
-                        if (originalWeight < mouthThreshold || keyName.Contains("_smile2") || keyName.Contains("_n"))
-                        {
-                            // 如果原版数值小于 mouthThreshold，直接忽略，强制闭嘴
-                            finalWeight = 0f;
-                        }
-                        if (originalWeight > 0)
-                            Plugin.Log.LogInfo($"【BlendShapeLinker】削弱嘴巴表情: {keyName} 原 {originalWeight} -> {finalWeight}");
-                    }
-                    else
-                    {
-                        finalWeight *= globalMultiplier; // 其他部位 50%
-                        if (originalWeight > 0)
-                            Plugin.Log.LogInfo($"【BlendShapeLinker】削弱其他表情: {keyName} 原 {originalWeight} -> {finalWeight}");
-                    }
-                } else
-                {
-                    finalWeight *= preserveKeysMultiplier; // 眨眼等保留表情 100%
-                    if (originalWeight > 0)
-                        Plugin.Log.LogInfo($" 【BlendShapeLinker】调整保留表情: {keyName} 原 {originalWeight} -> {finalWeight}");
-                }
-
-
-
-                    // 3. 应用
-                    myNewSMR.SetBlendShapeWeight(newIndex, finalWeight);
-            }
+            return path;
         }
     }
 }
