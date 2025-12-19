@@ -116,7 +116,14 @@ namespace MyCharacterMod
 
                 if (hips != null)
                 {
-                    Plugin.Log.LogInfo("【Mod日志】路径: " + hips.GetPath());
+                    string path = hips.name;
+                    while (hips.parent != null)
+                    {
+                        hips = hips.parent;
+                        path = hips.name + "/" + path;
+                    }
+
+                    Plugin.Log.LogInfo("【Mod日志】路径: " + path);
                     Hooks.ReplaceHeroineModel(root);
                 }
             }
@@ -419,18 +426,5 @@ namespace MyCharacterMod
     //    }
     //}
 
-    public static class TransformExtensions
-    {
-        public static string GetPath(this Transform current)
-        {
-            if (current == null) return string.Empty;
-            string path = current.name;
-            while (current.parent != null)
-            {
-                current = current.parent;
-                path = current.name + "/" + path;
-            }
-            return path;
-        }
-    }
+
 }
