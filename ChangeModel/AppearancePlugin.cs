@@ -58,7 +58,7 @@ namespace Cavi.AppearanceMod
                 return;
             }
 
-            Harmony.CreateAndPatchAll(typeof(Hooks));
+            Harmony.CreateAndPatchAll(typeof(CharacterPatches));
             Logger.LogInfo("插件启动成功，等待角色生成...");
         }
 
@@ -131,41 +131,7 @@ namespace Cavi.AppearanceMod
         }
     }
 
-    public static class Hooks
-    {
-        [HarmonyPatch(typeof(RoomGameManager), "Initialize")]
-        public static class RoomManagerPatch
-        {
-            [HarmonyPostfix]
-            public static void Postfix(RoomGameManager __instance)
-            {
-                // 如果已经加载过，就不再重复查找
-                if (AppearancePlugin._hasLoaded) return;
-
-                AppearancePlugin.Log.LogInfo("【Mod日志】RoomGameManager 初始化完成！");
-                GameObject characterObj = GameObject.Find("Character");
-
-                if (characterObj != null)
-                {
-                    CharacterPatches.ReplaceHeroineModel(characterObj);
-                }
-                else
-                {
-                    var fieldInfo = typeof(RoomGameManager).GetField("_heroineService", BindingFlags.NonPublic | BindingFlags.Instance);
-                    if (fieldInfo != null)
-                    {
-                        var service = fieldInfo.GetValue(__instance) as MonoBehaviour;
-                        if (service != null)
-                        {
-                            CharacterPatches.ReplaceHeroineModel(service.gameObject);
-                        }
-                    }
-                }
-            }
-        }
-
-        
-    }
+ 
 
 
     
