@@ -2,7 +2,7 @@
 using Bulbul;
 using Cavi.AppearanceMod.Components;
 using Cavi.AppearanceMod.Patches;
-using Cavi.AppearanceMod.Utils; // 添加这行
+using Cavi.AppearanceMod.Utils;
 using HarmonyLib;
 using System.IO;
 using System.Linq;
@@ -13,53 +13,45 @@ namespace Cavi.AppearanceMod
     [BepInPlugin("com.cavi.bulbulmod", "Eku Skin Mod", "1.0.4")]
     public class AppearancePlugin : BaseUnityPlugin
     {
-        public static bool ENABLE_GLASSES = false;
-        public const string MY_BODY_MESH_NAME = "Face";
+        // Configuration
+        public static bool EnableGlasses { get; set; } = false;
+        public const string BODY_MESH_NAME = "Face";
 
+        // Assets
+        public static AssetBundle CustomAssetBundle { get; private set; }
+        public static GameObject CustomCharacterPrefab { get; private set; }
 
-        // 保留这个用于向后兼容，但推荐使用 ModLogger
+        // State
+        private static bool s_isModelLoaded = false;
+        public static bool IsModelLoaded => s_isModelLoaded;
+
+        // Legacy compatibility
+        [System.Obsolete("Use ModLogger instead")]
         internal static BepInEx.Logging.ManualLogSource Log;
-        public static AssetBundle myBundle;
-        public static GameObject myCustomPrefab;
-        public static bool _hasLoaded = false;
 
         private void Awake()
         {
             Log = Logger;
-            ModLogger.Initialize(Logger); // 初始化统一日志
+            ModLogger.Initialize(Logger);
 
             string modFolder = Path.Combine(Paths.PluginPath, "EkuSkinMod");
             string bundlePath = Path.Combine(modFolder, "assets");
             string configPath = Path.Combine(modFolder, "config.txt");
 
-            LoadConfig(configPath);
+            LoadConfiguration(configPath);
+            LoadAssetBundle(bundlePath);
 
-            if (!File.Exists(bundlePath))
+            if (CustomCharacterPrefab == null)
             {
-                ModLogger.Error($"缺失 AssetBundle文件: {bundlePath}");
+                ModLogger.Error("Failed to initialize plugin: Missing prefab");
                 return;
             }
 
-            myBundle = AssetBundle.LoadFromFile(bundlePath);
-            if (myBundle == null)
-            {
-                ModLogger.Error("AssetBundle 加载失败！");
-                return;
-            }
-
-            myCustomPrefab = myBundle.LoadAsset<GameObject>("Eku_Release");
-            if (myCustomPrefab == null)
-            {
-                ModLogger.Error("找不到预制体 'Eku_Release'！");
-                return;
-            }
-
-            // Harmony.CreateAndPatchAll(typeof(CharacterPatches));
             Harmony.CreateAndPatchAll(typeof(CharacterPatches.RoomManagerPatch));
-            ModLogger.Info("插件启动成功，等待角色生成...");
+            ModLogger.Info("Plugin initialized, waiting for character spawn");
         }
 
-        private void LoadConfig(string configPath)
+        private void LoadConfiguration(string configPath)
         {
             try
             {
@@ -75,53 +67,84 @@ namespace Cavi.AppearanceMod
                         if (trimmed.StartsWith("ENABLE_GLASSES="))
                         {
                             string value = trimmed.Substring("ENABLE_GLASSES=".Length).Trim().ToLower();
-                            ENABLE_GLASSES = value == "true" || value == "1";
-                            ModLogger.LogConfig($"眼镜设置: {ENABLE_GLASSES}");
+                            EnableGlasses = value == "true" || value == "1";
+                            ModLogger.LogConfig($"Glasses enabled: {EnableGlasses}");
                         }
                     }
                 }
                 else
                 {
-                    // 如果配置文件不存在，创建一个默认的
-                    string defaultConfig = "# Eku Skin Mod 配置文件\n" +
-                                         "# 是否显示眼镜 (true=显示, false=隐藏)\n" +
-                                         "ENABLE_GLASSES=false";
-                    File.WriteAllText(configPath, defaultConfig);
-                    ModLogger.LogConfig($"已创建默认配置文件: {configPath}");
+                    CreateDefaultConfig(configPath);
                 }
             }
             catch (System.Exception ex)
             {
-                ModLogger.Warning($"读取配置文件失败，使用默认值: {ex.Message}");
+                ModLogger.Warning($"Failed to load config, using defaults: {ex.Message}");
             }
         }
 
-        void Update()
+        private void CreateDefaultConfig(string configPath)
         {
-            if (_hasLoaded) return;
+            string defaultConfig = "# Eku Skin Mod Configuration\n" +
+                                 "# Enable glasses (true=show, false=hide)\n" +
+                                 "ENABLE_GLASSES=false";
+            File.WriteAllText(configPath, defaultConfig);
+            ModLogger.LogConfig($"Created default config at: {configPath}");
+        }
 
-            // 1. 先找到最外层的 Character
-            GameObject root = GameObject.Find("Character");
-            if (root != null)
+        private void LoadAssetBundle(string bundlePath)
+        {
+            if (!File.Exists(bundlePath))
             {
-                // 2. 递归查找名字包含 "Hips" 的物体
-                // 这里的 true 表示即使物体是隐藏(Inactive)状态也要找，以防万一
-                Transform hips = root.GetComponentsInChildren<Transform>(true)
-                                     .FirstOrDefault(t => t.name == "Character_Hips");
-
-                if (hips != null)
-                {
-                    string path = hips.name;
-                    while (hips.parent != null)
-                    {
-                        hips = hips.parent;
-                        path = hips.name + "/" + path;
-                    }
-
-                    ModLogger.Info($"路径: {path}");
-                    CharacterPatches.ReplaceHeroineModel(root);
-                }
+                ModLogger.Error($"AssetBundle not found: {bundlePath}");
+                return;
             }
+
+            CustomAssetBundle = AssetBundle.LoadFromFile(bundlePath);
+            if (CustomAssetBundle == null)
+            {
+                ModLogger.Error("Failed to load AssetBundle");
+                return;
+            }
+
+            CustomCharacterPrefab = CustomAssetBundle.LoadAsset<GameObject>("Eku_Release");
+            if (CustomCharacterPrefab == null)
+            {
+                ModLogger.Error("Prefab 'Eku_Release' not found in AssetBundle");
+            }
+        }
+
+        private void Update()
+        {
+            if (s_isModelLoaded) return;
+
+            GameObject characterRoot = GameObject.Find("Character");
+            if (characterRoot == null) return;
+
+            Transform hips = characterRoot.GetComponentsInChildren<Transform>(true)
+                                         .FirstOrDefault(t => t.name == "Character_Hips");
+
+            if (hips != null)
+            {
+                ModLogger.Debug($"Found character at: {GetTransformPath(hips)}");
+                CharacterPatches.ReplaceCharacterModel(characterRoot);
+            }
+        }
+
+        private static string GetTransformPath(Transform transform)
+        {
+            string path = transform.name;
+            while (transform.parent != null)
+            {
+                transform = transform.parent;
+                path = transform.name + "/" + path;
+            }
+            return path;
+        }
+
+        public static void SetModelLoaded(bool loaded)
+        {
+            s_isModelLoaded = loaded;
         }
     }
 }

@@ -17,177 +17,249 @@ namespace Cavi.AppearanceMod.Patches
             [HarmonyPostfix]
             public static void Postfix(RoomGameManager __instance)
             {
-                if (AppearancePlugin._hasLoaded) return;
+                if (AppearancePlugin.IsModelLoaded) return;
 
-                ModLogger.Info("RoomGameManager 初始化完成！");
+                ModLogger.Info("RoomGameManager initialized");
                 GameObject characterObj = GameObject.Find("Character");
 
                 if (characterObj != null)
                 {
-                    ReplaceHeroineModel(characterObj);
+                    ReplaceCharacterModel(characterObj);
                 }
                 else
                 {
-                    var fieldInfo = typeof(RoomGameManager).GetField("_heroineService", BindingFlags.NonPublic | BindingFlags.Instance);
-                    if (fieldInfo != null && fieldInfo.GetValue(__instance) is MonoBehaviour service)
-                    {
-                        ReplaceHeroineModel(service.gameObject);
-                    }
+                    TryFindCharacterFromService(__instance);
+                }
+            }
+
+            private static void TryFindCharacterFromService(RoomGameManager instance)
+            {
+                var fieldInfo = typeof(RoomGameManager).GetField("_heroineService",
+                    BindingFlags.NonPublic | BindingFlags.Instance);
+
+                if (fieldInfo?.GetValue(instance) is MonoBehaviour service)
+                {
+                    ReplaceCharacterModel(service.gameObject);
                 }
             }
         }
 
-        public static void ReplaceHeroineModel(GameObject gameCharacterRoot)
+        public static void ReplaceCharacterModel(GameObject characterRoot)
         {
-            if (AppearancePlugin.myCustomPrefab == null || AppearancePlugin._hasLoaded) return;
+            if (AppearancePlugin.CustomCharacterPrefab == null || AppearancePlugin.IsModelLoaded)
+                return;
 
-            ModLogger.Info("开始执行替换逻辑...");
+            ModLogger.Info("Starting character model replacement");
 
-            // ================= 步骤 1: 锁定受害者 (原版 Face) =================
-            var originalSMRs = gameCharacterRoot.GetComponentsInChildren<SkinnedMeshRenderer>();
-            SkinnedMeshRenderer targetFaceSMR = null;
-
-            foreach (var smr in originalSMRs)
+            SkinnedMeshRenderer targetFaceRenderer = FindAndDisableOriginalRenderers(characterRoot);
+            if (targetFaceRenderer == null)
             {
-                if (smr.name == "Face" || smr.gameObject.name == "Face")
-                {
-                    ModLogger.LogOperation($"锁定原版组件: {smr.name}");
-                    targetFaceSMR = smr;
-                    targetFaceSMR.enabled = true;
-                }
-                else
-                {
-                    // 其他原来的衣服头发统统隐藏
-                    smr.enabled = false;
-                }
-            }
-
-            if (targetFaceSMR == null)
-            {
-                ModLogger.Error("严重：找不到原版的 Face 组件，无法进行形态键对接！");
+                ModLogger.Error("Failed to find original Face component");
                 return;
             }
 
-            // ================= 步骤 2: 生成并注入数据 =================
-            GameObject modInstance = Object.Instantiate(AppearancePlugin.myCustomPrefab);
-            var mySMRs = modInstance.GetComponentsInChildren<SkinnedMeshRenderer>();
+            GameObject modInstance = Object.Instantiate(AppearancePlugin.CustomCharacterPrefab);
+            Transform rootBone = FindChildRecursive(characterRoot.transform, "Character_Hips");
 
-            // 查找骨骼根节点
-            Transform gameRootBone = FindChildRecursive(gameCharacterRoot.transform, "Character_Hips");
-            if (gameRootBone == null)
+            if (rootBone == null)
             {
-                ModLogger.Error("找不到 Character_Hips");
+                ModLogger.Error("Character_Hips not found");
                 Object.Destroy(modInstance);
                 return;
             }
 
-            foreach (var mySMR in mySMRs)
-            {
-                // 准备材质和Shader
-                Material[] newMaterials = mySMR.materials;
-                Shader toonShader = Shader.Find("Universal Render Pipeline/Lit");
-                if (toonShader != null)
-                {
-                    foreach (var mat in newMaterials) mat.shader = toonShader;
-                }
-                else
-                {
-                    ModLogger.Warning("找不到 URP Lit Shader，可能导致材质粉色。");
-                }
-
-                // 准备骨骼重映射
-                Transform[] newBones = new Transform[mySMR.bones.Length];
-                for (int i = 0; i < mySMR.bones.Length; i++)
-                {
-                    string boneName = mySMR.bones[i].name;
-                    Transform foundBone = FindChildRecursive(gameCharacterRoot.transform, boneName);
-                    // 找不到就回退到 Hip，防止顶点飞到原点
-                    newBones[i] = foundBone != null ? foundBone : gameRootBone;
-                }
-
-                // >>> 分支 A: 如果是身体/脸 (鸠占鹊巢) <<<
-                if (mySMR.name == AppearancePlugin.MY_BODY_MESH_NAME)
-                {
-                    ModLogger.LogInjection("正在将新网格注入原版 Face 组件...");
-
-                    targetFaceSMR.sharedMesh = mySMR.sharedMesh;
-                    targetFaceSMR.materials = newMaterials;
-                    targetFaceSMR.bones = newBones;
-                    targetFaceSMR.rootBone = gameRootBone;
-
-                    continue;
-                }
-
-                // >>> 分支 B: 如果是其他部件 (头发、饰品) <<<
-                string targetName = mySMR.name + "_Mod";
-                GameObject newPart = new GameObject(targetName);
-                newPart.transform.SetParent(gameCharacterRoot.transform, false);
-
-                SkinnedMeshRenderer newSMR = newPart.AddComponent<SkinnedMeshRenderer>();
-                newSMR.sharedMesh = mySMR.sharedMesh;
-                newSMR.materials = newMaterials;
-                newSMR.bones = newBones;
-                newSMR.rootBone = gameRootBone;
-            }
-
+            ReplaceRenderers(modInstance, characterRoot, targetFaceRenderer, rootBone);
             Object.Destroy(modInstance);
 
-            // ================= 步骤 3: 配饰处理 =================
+            ConfigureAccessories(characterRoot);
+            AttachBlendShapeLinker(characterRoot);
 
-            // 处理眼镜
-            Transform glassesTr = FindChildRecursive(gameCharacterRoot.transform, "m_Glasses");
-            if (glassesTr != null)
+            AppearancePlugin.SetModelLoaded(true);
+            ModLogger.Info("Character model replacement completed");
+        }
+
+        private static SkinnedMeshRenderer FindAndDisableOriginalRenderers(GameObject characterRoot)
+        {
+            var renderers = characterRoot.GetComponentsInChildren<SkinnedMeshRenderer>();
+            SkinnedMeshRenderer faceRenderer = null;
+
+            foreach (var renderer in renderers)
             {
-                glassesTr.gameObject.SetActive(AppearancePlugin.ENABLE_GLASSES);
-                if (AppearancePlugin.ENABLE_GLASSES)
+                if (renderer.name == "Face" || renderer.gameObject.name == "Face")
                 {
-                    glassesTr.localPosition = new Vector3(-0.008f, 0.008f, 0.012f);
-                    glassesTr.localScale = Vector3.one * 1.29f;
+                    ModLogger.LogOperation($"Found original Face component: {renderer.name}");
+                    faceRenderer = renderer;
+                    faceRenderer.enabled = true;
                 }
                 else
                 {
-                    glassesTr.localPosition = new Vector3(99f, 99f, 99f);
+                    renderer.enabled = false;
                 }
             }
 
-            // TODO: 确定耳机位置而不是直接隐藏
-            // 临时禁用耳机
-            Transform headphonesTr = FindChildRecursive(gameCharacterRoot.transform, "m_Headphone_cat");
-            if (headphonesTr != null)
+            return faceRenderer;
+        }
+
+        private static void ReplaceRenderers(
+            GameObject modInstance,
+            GameObject characterRoot,
+            SkinnedMeshRenderer targetFaceRenderer,
+            Transform rootBone)
+        {
+            var customRenderers = modInstance.GetComponentsInChildren<SkinnedMeshRenderer>();
+
+            foreach (var customRenderer in customRenderers)
             {
-                headphonesTr.gameObject.SetActive(AppearancePlugin.ENABLE_GLASSES);
-                headphonesTr.localPosition = new Vector3(99f, 99f, 99f);
+                Material[] materials = PrepareMateria(customRenderer);
+                Transform[] bones = RemapBones(customRenderer, characterRoot.transform, rootBone);
+
+                if (customRenderer.name == AppearancePlugin.BODY_MESH_NAME)
+                {
+                    InjectFaceMesh(targetFaceRenderer, customRenderer, materials, bones, rootBone);
+                }
+                else
+                {
+                    CreateNewMeshPart(characterRoot, customRenderer, materials, bones, rootBone);
+                }
             }
+        }
 
-            // ================= 步骤 4: 添加形态键同步组件 =================
-            var finalFaceSMR = gameCharacterRoot.GetComponentsInChildren<SkinnedMeshRenderer>()
-                .FirstOrDefault(smr => smr.name == "Face");
+        // Although mats have already been set to Liltoon (or other) in the asset bundle,
+        // we need to reassign them to URP Lit shader, otherwise they will disappear! Weird. 
+        private static Material[] PrepareMateria(SkinnedMeshRenderer renderer)
+        {
+            Material[] materials = renderer.materials;
+            Shader urpShader = Shader.Find("Universal Render Pipeline/Lit");
 
-            if (finalFaceSMR != null)
+            if (urpShader != null)
             {
-                var linker = gameCharacterRoot.AddComponent<BlendShapeLinker>();
-                linker.originalSMR = finalFaceSMR;
-                linker.myNewSMR = finalFaceSMR;
-
-                ModLogger.Info("已添加 BlendShapeLinker 组件");
+                foreach (var mat in materials)
+                    mat.shader = urpShader;
             }
             else
             {
-                ModLogger.Warning("未找到 Face 组件，无法添加形态键同步");
+                ModLogger.Warning("URP Lit shader not found, materials may appear pink");
             }
 
-            AppearancePlugin._hasLoaded = true;
-            ModLogger.Info("替换流程完美结束！");
+            return materials;
+        }
+
+        private static Transform[] RemapBones(
+            SkinnedMeshRenderer renderer,
+            Transform characterRoot,
+            Transform fallbackBone)
+        {
+            Transform[] bones = new Transform[renderer.bones.Length];
+
+            for (int i = 0; i < renderer.bones.Length; i++)
+            {
+                string boneName = renderer.bones[i].name;
+                Transform foundBone = FindChildRecursive(characterRoot, boneName);
+                bones[i] = foundBone ?? fallbackBone;
+            }
+
+            return bones;
+        }
+
+        private static void InjectFaceMesh(
+            SkinnedMeshRenderer target,
+            SkinnedMeshRenderer source,
+            Material[] materials,
+            Transform[] bones,
+            Transform rootBone)
+        {
+            ModLogger.LogInjection("Injecting custom mesh into Face component");
+
+            target.sharedMesh = source.sharedMesh;
+            target.materials = materials;
+            target.bones = bones;
+            target.rootBone = rootBone;
+        }
+
+        private static void CreateNewMeshPart(
+            GameObject parent,
+            SkinnedMeshRenderer source,
+            Material[] materials,
+            Transform[] bones,
+            Transform rootBone)
+        {
+            string partName = $"{source.name}_Mod";
+            GameObject newPart = new GameObject(partName);
+            newPart.transform.SetParent(parent.transform, false);
+
+            SkinnedMeshRenderer newRenderer = newPart.AddComponent<SkinnedMeshRenderer>();
+            newRenderer.sharedMesh = source.sharedMesh;
+            newRenderer.materials = materials;
+            newRenderer.bones = bones;
+            newRenderer.rootBone = rootBone;
+
+            ModLogger.Debug($"Created mesh part: {partName}");
+        }
+
+        private static void ConfigureAccessories(GameObject characterRoot)
+        {
+            ConfigureGlasses(characterRoot);
+            ConfigureHeadphones(characterRoot);
+        }
+
+        private static void ConfigureGlasses(GameObject characterRoot)
+        {
+            Transform glasses = FindChildRecursive(characterRoot.transform, "m_Glasses");
+            if (glasses == null) return;
+
+            glasses.gameObject.SetActive(AppearancePlugin.EnableGlasses);
+
+            if (AppearancePlugin.EnableGlasses)
+            {
+                glasses.localPosition = new Vector3(-0.008f, 0.008f, 0.012f);
+                glasses.localScale = Vector3.one * 1.29f;
+            }
+            else
+            {
+                glasses.localPosition = new Vector3(99f, 99f, 99f);
+            }
+        }
+
+        private static void ConfigureHeadphones(GameObject characterRoot)
+        {
+            Transform headphones = FindChildRecursive(characterRoot.transform, "m_Headphone_cat");
+            if (headphones == null) return;
+
+            // TODO: Determine proper headphone position instead of hiding
+            headphones.gameObject.SetActive(false);
+            headphones.localPosition = new Vector3(99f, 99f, 99f);
+        }
+
+        private static void AttachBlendShapeLinker(GameObject characterRoot)
+        {
+            var faceRenderer = characterRoot.GetComponentsInChildren<SkinnedMeshRenderer>()
+                .FirstOrDefault(smr => smr.name == "Face");
+
+            if (faceRenderer != null)
+            {
+                var linker = characterRoot.AddComponent<BlendShapeLinker>();
+               
+                linker.originalRenderer = faceRenderer;
+                linker.customRenderer = faceRenderer;
+
+                ModLogger.Info("BlendShapeLinker component attached");
+            }
+            else
+            {
+                ModLogger.Warning("Face component not found, cannot attach BlendShapeLinker");
+            }
         }
 
         private static Transform FindChildRecursive(Transform parent, string name)
         {
             if (parent.name == name) return parent;
+
             foreach (Transform child in parent)
             {
-                var result = FindChildRecursive(child, name);
+                Transform result = FindChildRecursive(child, name);
                 if (result != null) return result;
             }
+
             return null;
         }
     }
