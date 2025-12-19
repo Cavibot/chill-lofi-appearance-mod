@@ -25,14 +25,10 @@ namespace Cavi.AppearanceMod
         private static bool s_isModelLoaded = false;
         public static bool IsModelLoaded => s_isModelLoaded;
 
-        // Legacy compatibility
-        [System.Obsolete("Use ModLogger instead")]
-        internal static BepInEx.Logging.ManualLogSource Log;
 
         private void Awake()
         {
-            Log = Logger;
-            ModLogger.Initialize(Logger);
+
 
             string modFolder = Path.Combine(Paths.PluginPath, "EkuSkinMod");
             string bundlePath = Path.Combine(modFolder, "assets");
