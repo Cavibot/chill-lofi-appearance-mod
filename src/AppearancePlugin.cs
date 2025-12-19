@@ -81,7 +81,8 @@ namespace Cavi.AppearanceMod
 
         private void CreateDefaultConfig(string configPath)
         {
-            string defaultConfig = "# Eku Skin Mod Configuration\n" +
+            string defaultConfig = "启用眼镜（true=显示，false=隐藏）\n" +
+                                    "# Eku Skin Mod Configuration\n" +
                                  "# Enable glasses (true=show, false=hide)\n" +
                                  "ENABLE_GLASSES=false";
             File.WriteAllText(configPath, defaultConfig);
@@ -103,6 +104,7 @@ namespace Cavi.AppearanceMod
                 return;
             }
 
+            // TODO: Eku_Release should not be hardcoded
             CustomCharacterPrefab = CustomAssetBundle.LoadAsset<GameObject>("Eku_Release");
             if (CustomCharacterPrefab == null)
             {

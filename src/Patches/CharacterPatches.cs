@@ -196,6 +196,7 @@ namespace Cavi.AppearanceMod.Patches
             ModLogger.Debug($"Created mesh part: {partName}");
         }
 
+        // TODO: how to support different avatars with different accessory names/structures? Using external config?
         private static void ConfigureAccessories(GameObject characterRoot)
         {
             ConfigureGlasses(characterRoot);

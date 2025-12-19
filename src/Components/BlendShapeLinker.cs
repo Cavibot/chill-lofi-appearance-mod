@@ -19,6 +19,8 @@ namespace Cavi.AppearanceMod.Components
         [Tooltip("The custom skinned mesh renderer (target for blend shape synchronization)")]
         public SkinnedMeshRenderer customRenderer;
 
+        // TODO: Consider using config file instead, as well as adding a global enable/disable toggle
+        // These settings are hardcoded for Eku
         [Header("Weight Multipliers")]
         [Tooltip("Global multiplier for all non-preserved blend shapes")]
         [Range(0f, 2f)]
@@ -60,6 +62,7 @@ namespace Cavi.AppearanceMod.Components
         {
             ModLogger.Info($"BlendShapeLinker on {gameObject.name}: Initializing");
             _blendShapeIndexMap = new Dictionary<int, int>();
+            // TODO: This should also be configurable via external config
             _preservedBlendShapes = new HashSet<string>
             {
                 "blendShape1.Eye_blink",
