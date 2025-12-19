@@ -44,7 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Patches\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
 
   <ItemGroup>
