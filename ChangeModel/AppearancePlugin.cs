@@ -16,7 +16,6 @@ namespace Cavi.AppearanceMod
 
     public class AppearancePlugin : BaseUnityPlugin
     {
-        // ================= 配置区域 =================
         public static bool ENABLE_GLASSES = false;
         public const string MY_BODY_MESH_NAME = "Face";
         // ===========================================
