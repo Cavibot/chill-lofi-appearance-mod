@@ -1,4 +1,4 @@
-﻿# Custom Skin Mod for Chill with You : Lo-Fi Story
+﻿# A Custom Skin Mod for Chill with You : Lo-Fi Story
 
 这是一个为 Chill with You : Lo-Fi Story 制作的角色外观替换 Mod，支持自定义 3D 模型。
 

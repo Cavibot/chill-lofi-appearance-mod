@@ -1,6 +1,6 @@
 ﻿using Bulbul;
 using Cavi.ChillWithAnyone;
-using Cavi.ChillWithAnyone.Components;
+using Cavi.ChillWithAnyone.Components; 
 using Cavi.ChillWithAnyone.Utils;
 using HarmonyLib;
 using System.Linq;
@@ -124,7 +124,7 @@ namespace Cavi.ChillWithAnyone.Patches
             }
         }
 
-        // Although mats have already been set to Liltoon (or other) in the asset bundle,
+        // Although mats have already been set to Liltoon (or other) in the asset bundle, 
         // we need to reassign them to URP Lit shader, otherwise they will disappear! Weird. 
         private static Material[] PrepareMateria(SkinnedMeshRenderer renderer)
         {
