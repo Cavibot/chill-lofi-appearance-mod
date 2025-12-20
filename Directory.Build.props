@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <!-- 设置游戏路径 - 根据实际安装路径修改 -->
+    <GamePath>D:\SteamLibrary\steamapps\common\Chill with You Lo-Fi Story</GamePath>
+  </PropertyGroup>
+</Project>

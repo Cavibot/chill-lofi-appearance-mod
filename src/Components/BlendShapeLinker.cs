@@ -1,8 +1,8 @@
-﻿using Cavi.AppearanceMod.Utils;
+﻿using Cavi.ChillWithAnyone.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Cavi.AppearanceMod.Components
+namespace Cavi.ChillWithAnyone.Components
 {
     /// <summary>
     /// Synchronizes blend shape weights from the original mesh to the custom mesh.

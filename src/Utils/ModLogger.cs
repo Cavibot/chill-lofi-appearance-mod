@@ -1,6 +1,6 @@
 ﻿using BepInEx.Logging;
 
-namespace Cavi.AppearanceMod.Utils
+namespace Cavi.ChillWithAnyone.Utils
 {
     /// <summary>
     /// 统一日志输出工具类
@@ -10,7 +10,7 @@ namespace Cavi.AppearanceMod.Utils
         private static ManualLogSource _logger;
 
         /// <summary>
-        /// 初始化日志（在 AppearancePlugin.Awake 中调用）
+        /// 初始化日志（在 ChillWithAnyonePlugin.Awake 中调用）
         /// </summary>
         public static void Initialize(ManualLogSource logger)
         {

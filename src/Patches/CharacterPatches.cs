@@ -1,13 +1,13 @@
 ﻿using Bulbul;
-using Cavi.AppearanceMod;
-using Cavi.AppearanceMod.Components;
-using Cavi.AppearanceMod.Utils;
+using Cavi.ChillWithAnyone;
+using Cavi.ChillWithAnyone.Components;
+using Cavi.ChillWithAnyone.Utils;
 using HarmonyLib;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
-namespace Cavi.AppearanceMod.Patches
+namespace Cavi.ChillWithAnyone.Patches
 {
     public static class CharacterPatches
     {
@@ -17,7 +17,7 @@ namespace Cavi.AppearanceMod.Patches
             [HarmonyPostfix]
             public static void Postfix(RoomGameManager __instance)
             {
-                if (AppearancePlugin.IsModelLoaded) return;
+                if (ChillWithAnyonePlugin.IsModelLoaded) return;
 
                 ModLogger.Info("RoomGameManager initialized");
                 GameObject characterObj = GameObject.Find("Character");
@@ -46,7 +46,7 @@ namespace Cavi.AppearanceMod.Patches
 
         public static void ReplaceCharacterModel(GameObject characterRoot)
         {
-            if (AppearancePlugin.CustomCharacterPrefab == null || AppearancePlugin.IsModelLoaded)
+            if (ChillWithAnyonePlugin.CustomCharacterPrefab == null || ChillWithAnyonePlugin.IsModelLoaded)
                 return;
 
             ModLogger.Info("Starting character model replacement");
@@ -58,7 +58,7 @@ namespace Cavi.AppearanceMod.Patches
                 return;
             }
 
-            GameObject modInstance = Object.Instantiate(AppearancePlugin.CustomCharacterPrefab);
+            GameObject modInstance = Object.Instantiate(ChillWithAnyonePlugin.CustomCharacterPrefab);
             Transform rootBone = FindChildRecursive(characterRoot.transform, "Character_Hips");
 
             if (rootBone == null)
@@ -74,7 +74,7 @@ namespace Cavi.AppearanceMod.Patches
             ConfigureAccessories(characterRoot);
             AttachBlendShapeLinker(characterRoot);
 
-            AppearancePlugin.SetModelLoaded(true);
+            ChillWithAnyonePlugin.SetModelLoaded(true);
             ModLogger.Info("Character model replacement completed");
         }
 
@@ -113,7 +113,7 @@ namespace Cavi.AppearanceMod.Patches
                 Material[] materials = PrepareMateria(customRenderer);
                 Transform[] bones = RemapBones(customRenderer, characterRoot.transform, rootBone);
 
-                if (customRenderer.name == AppearancePlugin.BODY_MESH_NAME)
+                if (customRenderer.name == ChillWithAnyonePlugin.BODY_MESH_NAME)
                 {
                     InjectFaceMesh(targetFaceRenderer, customRenderer, materials, bones, rootBone);
                 }
@@ -208,9 +208,9 @@ namespace Cavi.AppearanceMod.Patches
             Transform glasses = FindChildRecursive(characterRoot.transform, "m_Glasses");
             if (glasses == null) return;
 
-            glasses.gameObject.SetActive(AppearancePlugin.EnableGlasses);
+            glasses.gameObject.SetActive(ChillWithAnyonePlugin.EnableGlasses);
 
-            if (AppearancePlugin.EnableGlasses)
+            if (ChillWithAnyonePlugin.EnableGlasses)
             {
                 glasses.localPosition = new Vector3(-0.008f, 0.008f, 0.012f);
                 glasses.localScale = Vector3.one * 1.29f;

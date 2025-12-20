@@ -30,7 +30,7 @@
 └── BepInEx/
     └── plugins/
         └── EkuSkinMod/
-            ├── Cavi.AppearanceMod.dll
+            ├── Cavi.ChillWithAnyone.dll
             ├── assets
             └── config.txt
 
@@ -74,8 +74,8 @@ ENABLE_GLASSES=false
 
 1. 克隆仓库：
 ```bash
-git clone https://github.com/Cavibot/chill-lofi-appearance-mod.git
-cd 仓库名
+git clone https://github.com/Cavibot/chill-with-anyone-mod.git
+cd chill-with-anyone-mod
 
 ```
 
@@ -111,14 +111,14 @@ dotnet build -c Release
 ## 📁 项目结构
 
 ```text
-Cavi.AppearanceMod/
+Cavi.ChillWithAnyone/
 ├── Components/           # Unity 组件逻辑 (如 BlendShapeLinker)
 │   └── BlendShapeLinker.cs
 ├── Patches/              # Harmony 补丁逻辑 (核心 Hook 代码)
 │   └── CharacterPatches.cs
 ├── Utils/                # 工具类与扩展方法
 │   └── TransformExtensions.cs
-├── AppearancePlugin.cs   # BepInEx 插件入口文件
+├── ChillWithAnyonePlugin.cs   # BepInEx 插件入口文件
 └── README.md
 
 ```

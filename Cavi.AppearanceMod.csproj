@@ -1,6 +1,6 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
+XXXXXXXXXXXXXXXX<Project Sdk="Microsoft.NET.SdkXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX">
+XXXXXXXXXXX
+  <PropertyGroupXXXXXXXXXXXXXXXXXXXXXXXXXX>
     <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
@@ -52,9 +52,15 @@
     <None Include="Components\BlendShapeLinker.cs" />
   </ItemGroup>
 
-  <!-- 移除或修改 PostBuild 事件，使其更通用 -->
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="Exists('$(GamePath)')">
-    <Exec Command="xcopy /Y /I &quot;$(TargetDir)Cavi.AppearanceMod.dll&quot; &quot;$(GamePath)\BepInEx\plugins\EkuSkinMod&quot;" />
-  </Target>
+	<!-- 构建后自动复制到游戏目录 -->
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="Exists('$(GamePath)')">
+		<Message Importance="High" Text="正在复制到游戏目录: $(GamePath)" />
+		<Exec Command="xcopy /Y /I &quot;$(TargetDir)Cavi.ChillWithAnyone.dll&quot; &quot;$(GamePath)\BepInEx\plugins\ChillWithAnyone\&quot;" />
+	</Target>
+
+	<!-- 路径不存在时的警告 -->
+	<Target Name="ValidateGamePath" BeforeTargets="PostBuild">
+		<Warning Condition="!Exists('$(GamePath)')" Text="游戏路径不存在: $(GamePath) - 已跳过自动复制" />
+	</Target>
 
 </Project>

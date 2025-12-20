@@ -1,19 +1,19 @@
 ﻿using BepInEx;
 using Bulbul;
-using Cavi.AppearanceMod.Components;
-using Cavi.AppearanceMod.Patches;
-using Cavi.AppearanceMod.Utils;
+using Cavi.ChillWithAnyone.Components;
+using Cavi.ChillWithAnyone.Patches;
+using Cavi.ChillWithAnyone.Utils;
 using HarmonyLib;
 using System.IO;
 using System.Linq;
 using UnityEngine;
 
-namespace Cavi.AppearanceMod
+namespace Cavi.ChillWithAnyone
 {
-    [BepInPlugin("com.cavi.bulbulmod", "Eku Skin Mod", "1.0.4")]
-    public class AppearancePlugin : BaseUnityPlugin
+    [BepInPlugin("com.cavi.chillwithanyone", "Chill With Anyone", "1.0.0")]
+    public class ChillWithAnyonePlugin : BaseUnityPlugin
     {
-        // Configuration
+        // Configuration 
         public static bool EnableGlasses { get; set; } = false;
         public const string BODY_MESH_NAME = "Face";
 
@@ -30,7 +30,7 @@ namespace Cavi.AppearanceMod
         {
 
 
-            string modFolder = Path.Combine(Paths.PluginPath, "EkuSkinMod");
+            string modFolder = Path.Combine(Paths.PluginPath, "ChillWithAnyone");
             string bundlePath = Path.Combine(modFolder, "assets");
             string configPath = Path.Combine(modFolder, "config.txt");
 
@@ -82,7 +82,7 @@ namespace Cavi.AppearanceMod
         private void CreateDefaultConfig(string configPath)
         {
             string defaultConfig = "启用眼镜（true=显示，false=隐藏）\n" +
-                                    "# Eku Skin Mod Configuration\n" +
+                                    "# Chill With Anyone Configuration\n" +
                                  "# Enable glasses (true=show, false=hide)\n" +
                                  "ENABLE_GLASSES=false";
             File.WriteAllText(configPath, defaultConfig);
