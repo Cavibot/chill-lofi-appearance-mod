@@ -47,6 +47,15 @@
 			<HintPath>$(GamePath)\Chill With You_Data\Managed\UnityEngine.InputModule.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
+
+		<Reference Include="UnityEngine.AnimationModule">
+			<HintPath>$(GamePath)\Chill With You_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		<Reference Include="UnityEngine.TextRenderingModule">
+			<HintPath>$(GamePath)\Chill With You_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
 	</ItemGroup>
 
 	<!-- 构建后自动复制到游戏目录（仅 Windows，且需要存在 BepInEx\plugins 目录） -->
