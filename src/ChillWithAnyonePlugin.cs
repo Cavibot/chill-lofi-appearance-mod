@@ -15,6 +15,7 @@ namespace Cavi.ChillWithAnyone
     {
         // Configuration 
         public static bool EnableGlasses { get; set; } = false;
+        public static bool EnableDebugger { get; set; } = true;
         public const string BODY_MESH_NAME = "Face";
 
         // Assets
@@ -66,6 +67,12 @@ namespace Cavi.ChillWithAnyone
                             EnableGlasses = value == "true" || value == "1";
                             ModLogger.LogConfig($"Glasses enabled: {EnableGlasses}");
                         }
+                        else if (trimmed.StartsWith("ENABLE_DEBUGGER="))
+                        {
+                            string value = trimmed.Substring("ENABLE_DEBUGGER=".Length).Trim().ToLower();
+                            EnableDebugger = value == "true" || value == "1";
+                            ModLogger.LogConfig($"Debugger enabled: {EnableDebugger}");
+                        }
                     }
                 }
                 else
@@ -81,10 +88,13 @@ namespace Cavi.ChillWithAnyone
 
         private void CreateDefaultConfig(string configPath)
         {
-            string defaultConfig = "启用眼镜（true=显示，false=隐藏）\n" +
-                                    "# Chill With Anyone Configuration\n" +
+            string defaultConfig = "# Chill With Anyone Configuration\n" +
+                                 "# 启用眼镜（true=显示，false=隐藏）\n" +
                                  "# Enable glasses (true=show, false=hide)\n" +
-                                 "ENABLE_GLASSES=false";
+                                 "ENABLE_GLASSES=false\n\n" +
+                                 "# 启用调试器（true=启用，false=禁用）- 按F9打开\n" +
+                                 "# Enable debugger (true=enable, false=disable) - Press F9 to open\n" +
+                                 "ENABLE_DEBUGGER=true";
             File.WriteAllText(configPath, defaultConfig);
             ModLogger.LogConfig($"Created default config at: {configPath}");
         }
@@ -108,7 +118,12 @@ namespace Cavi.ChillWithAnyone
             CustomCharacterPrefab = CustomAssetBundle.LoadAsset<GameObject>("Eku_Release");
             if (CustomCharacterPrefab == null)
             {
+<<<<<<< Updated upstream
                 ModLogger.Error("Prefab 'Eku_Release' not found in AssetBundle");
+=======
+                ModLogger.Error("Prefab 'Mod_Character' not found in AssetBundle");
+                CustomCharacterPrefab = CustomAssetBundle.LoadAsset<GameObject>("Eku_Release");
+>>>>>>> Stashed changes
             }
         }
 
@@ -143,6 +158,27 @@ namespace Cavi.ChillWithAnyone
         public static void SetModelLoaded(bool loaded)
         {
             s_isModelLoaded = loaded;
+        }
+
+        /// <summary>
+        /// Attaches the debugger component to a BlendShapeLinker
+        /// </summary>
+        public static void AttachDebugger(GameObject target, BlendShapeLinker linker)
+        {
+            if (!EnableDebugger)
+            {
+                ModLogger.Info("BlendShapeDebugger is disabled in config");
+                return;
+            }
+
+            var debugger = target.GetComponent<BlendShapeDebugger>();
+            if (debugger == null)
+            {
+                debugger = target.AddComponent<BlendShapeDebugger>();
+            }
+
+            debugger.linker = linker;
+            ModLogger.Info($"BlendShapeDebugger attached to {target.name} - Press F9 to open");
         }
     }
 }

@@ -26,6 +26,9 @@
 			<HintPath>..\libs\UnityEngine.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
+		<Reference Include="UnityEngine.AnimationModule">
+		  <HintPath>..\libs\UnityEngine.AnimationModule.dll</HintPath>
+		</Reference>
 		<Reference Include="UnityEngine.AssetBundleModule">
 			<HintPath>..\libs\UnityEngine.AssetBundleModule.dll</HintPath>
 			<Private>False</Private>
@@ -45,6 +48,12 @@
 		<Reference Include="UnityEngine.InputModule">
 			<HintPath>..\libs\UnityEngine.InputModule.dll</HintPath>
 			<Private>False</Private>
+		</Reference>
+		<Reference Include="UnityEngine.JSONSerializeModule">
+		  <HintPath>..\libs\UnityEngine.JSONSerializeModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.TextRenderingModule">
+		  <HintPath>..\libs\UnityEngine.TextRenderingModule.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 

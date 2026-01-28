@@ -244,6 +244,8 @@ namespace Cavi.ChillWithAnyone.Patches
                 linker.customRenderer = faceRenderer;
 
                 ModLogger.Info("BlendShapeLinker component attached");
+
+                ChillWithAnyonePlugin.AttachDebugger(characterRoot, linker);
             }
             else
             {
