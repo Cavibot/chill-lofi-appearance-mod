@@ -1,4 +1,4 @@
-﻿using BepInEx;
+using BepInEx;
 using Bulbul;
 using Cavi.ChillWithAnyone.Components;
 using Cavi.ChillWithAnyone.Patches;
@@ -115,21 +115,12 @@ namespace Cavi.ChillWithAnyone
             }
 
             // TODO: Eku_Release should not be hardcoded
-            CustomCharacterPrefab = CustomAssetBundle.LoadAsset<GameObject>("Eku_Release");
+            CustomCharacterPrefab = CustomAssetBundle.LoadAsset<GameObject>("Mod_Character");
             if (CustomCharacterPrefab == null)
             {
-<<<<<<< Updated upstream
-                ModLogger.Error("Prefab 'Eku_Release' not found in AssetBundle");
-=======
                 ModLogger.Error("Prefab 'Mod_Character' not found in AssetBundle");
                 CustomCharacterPrefab = CustomAssetBundle.LoadAsset<GameObject>("Eku_Release");
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+
             }
         }
 
