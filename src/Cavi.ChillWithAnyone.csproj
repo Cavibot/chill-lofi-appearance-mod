@@ -50,11 +50,14 @@
 			<HintPath>$(GamePath)\Chill With You_Data\Managed\UnityEngine.InputModule.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
-		<Reference Include="UnityEngine.JSONSerializeModule">
-		  <HintPath>..\libs\UnityEngine.JSONSerializeModule.dll</HintPath>
+
+		<Reference Include="UnityEngine.AnimationModule">
+			<HintPath>$(GamePath)\Chill With You_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+			<Private>False</Private>
 		</Reference>
 		<Reference Include="UnityEngine.TextRenderingModule">
-		  <HintPath>..\libs\UnityEngine.TextRenderingModule.dll</HintPath>
+			<HintPath>$(GamePath)\Chill With You_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+			<Private>False</Private>
 		</Reference>
 	</ItemGroup>
 

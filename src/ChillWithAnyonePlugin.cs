@@ -29,6 +29,7 @@ namespace Cavi.ChillWithAnyone
 
         private void Awake()
         {
+            ModLogger.Initialize(Logger);
 
 
             string modFolder = Path.Combine(Paths.PluginPath, "ChillWithAnyone");
@@ -114,12 +115,19 @@ namespace Cavi.ChillWithAnyone
                 return;
             }
 
-            // TODO: Eku_Release should not be hardcoded
+
             CustomCharacterPrefab = CustomAssetBundle.LoadAsset<GameObject>("Mod_Character");
             if (CustomCharacterPrefab == null)
             {
                 ModLogger.Error("Prefab 'Mod_Character' not found in AssetBundle");
                 CustomCharacterPrefab = CustomAssetBundle.LoadAsset<GameObject>("Eku_Release");
+                if(CustomCharacterPrefab != null)
+                {
+                    ModLogger.Warning("Loaded fallback prefab 'Eku_Release' instead");
+                } else
+                {
+                    ModLogger.Error("Fallback prefab 'Eku_Release' also not found in AssetBundle");
+                }
 
             }
         }
