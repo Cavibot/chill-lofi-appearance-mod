@@ -1,61 +1,62 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
+		<GamePath Condition=" '$(GamePath)' == '' ">C:\Program Files (x86)\Steam\steamapps\common\Chill with You Lo-Fi Story\</GamePath>
 		<TargetFramework>netstandard2.1</TargetFramework>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<!-- BepInEx Dependencies -->
 		<Reference Include="0Harmony">
-			<HintPath>..\libs\0Harmony.dll</HintPath>
+			<HintPath>$(GamePath)\BepInEx\core\0Harmony.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="BepInEx">
-			<HintPath>..\libs\BepInEx.dll</HintPath>
+			<HintPath>$(GamePath)\BepInEx\core\BepInEx.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 
 		<!-- Game Dependencies -->
 		<Reference Include="Assembly-CSharp">
-			<HintPath>..\libs\Assembly-CSharp.dll</HintPath>
+			<HintPath>$(GamePath)\Chill With You_Data\Managed\Assembly-CSharp.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 
 		<!-- Unity Dependencies -->
 		<Reference Include="UnityEngine">
-			<HintPath>..\libs\UnityEngine.dll</HintPath>
+			<HintPath>$(GamePath)\Chill With You_Data\Managed\UnityEngine.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="UnityEngine.AssetBundleModule">
-			<HintPath>..\libs\UnityEngine.AssetBundleModule.dll</HintPath>
+			<HintPath>$(GamePath)\Chill With You_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="UnityEngine.CoreModule">
-			<HintPath>..\libs\UnityEngine.CoreModule.dll</HintPath>
+			<HintPath>$(GamePath)\Chill With You_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="UnityEngine.IMGUIModule">
-			<HintPath>..\libs\UnityEngine.IMGUIModule.dll</HintPath>
+			<HintPath>$(GamePath)\Chill With You_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="UnityEngine.InputLegacyModule">
-			<HintPath>..\libs\UnityEngine.InputLegacyModule.dll</HintPath>
+			<HintPath>$(GamePath)\Chill With You_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="UnityEngine.InputModule">
-			<HintPath>..\libs\UnityEngine.InputModule.dll</HintPath>
+			<HintPath>$(GamePath)\Chill With You_Data\Managed\UnityEngine.InputModule.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 	</ItemGroup>
 
-	<!-- 构建后自动复制到游戏目录 -->
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="Exists('$(GamePath)')">
+	<!-- 构建后自动复制到游戏目录（仅 Windows，且需要存在 BepInEx\plugins 目录） -->
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(OS)' == 'Windows_NT' AND Exists('$(GamePath)\BepInEx\plugins')">
 		<Message Importance="High" Text="正在复制到: $(GamePath)" />
 		<Exec Command="xcopy /Y /I &quot;$(TargetDir)Cavi.ChillWithAnyone.dll&quot; &quot;$(GamePath)\BepInEx\plugins\ChillWithAnyone\&quot;" />
 	</Target>
 
-	<!-- 路径不存在时的警告 -->
-	<Target Name="ValidateGamePath" BeforeTargets="PostBuild">
+	<!-- 路径不存在时的警告（仅 Windows） -->
+	<Target Name="ValidateGamePath" BeforeTargets="PostBuild" Condition="'$(OS)' == 'Windows_NT'">
 		<Warning Condition="!Exists('$(GamePath)')" Text="游戏路径不存在: $(GamePath) - 已跳过自动复制" />
 	</Target>
 
