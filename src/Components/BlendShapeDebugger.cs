@@ -118,10 +118,10 @@ namespace Cavi.ChillWithAnyone.Components
             DrawStatusBar();
             DrawAnimatorControl();
             
-            // ============ 添加全局分类面板 ============
+
             GUILayout.Space(10);
             DrawGlobalCategories();
-            // ========================================
+
 
             GUILayout.Space(10);
             DrawSearchBar();

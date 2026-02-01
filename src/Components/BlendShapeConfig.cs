@@ -13,7 +13,6 @@ namespace Cavi.ChillWithAnyone.Components
         public bool isDisabled = false;
     }
 
-    // ============ 新增：全局分类配置 ============
     [Serializable]
     public class GlobalCategoryConfig
     {
@@ -24,16 +23,16 @@ namespace Cavi.ChillWithAnyone.Components
         public bool isInverted = false;
         public bool isDisabled = false;
     }
-    // ==========================================
+
 
     [Serializable]
     public class BlendShapeConfigRoot
     {
         public BlendShapeConfigItem[] config;
         
-        // ============ 新增：全局分类 ============
+
         public GlobalCategoryConfig mouthGlobal = new GlobalCategoryConfig();
         public GlobalCategoryConfig eyeGlobal = new GlobalCategoryConfig();
-        // ======================================
+
     }
 }
