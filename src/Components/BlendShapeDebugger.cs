@@ -680,7 +680,10 @@ namespace Cavi.ChillWithAnyone.Components
         {
             try
             {
-                string configPath = Path.Combine(BepInEx.Paths.ConfigPath, "BlendShapeLinker", "blendshape_config.json");
+                // ============ 修改：使用模组目录 ============
+                string pluginPath = System.IO.Path.GetDirectoryName(typeof(BlendShapeLinker).Assembly.Location);
+                string configPath = System.IO.Path.Combine(pluginPath, "blendshape_config.json");
+                // ==========================================
 
                 var configuredShapes = _blendShapeList
                     .Where(b => b.hasConfig && b.config != null)
@@ -743,11 +746,13 @@ namespace Cavi.ChillWithAnyone.Components
                 jsonBuilder.AppendLine("    ]");
                 jsonBuilder.AppendLine("}");
 
-                string directory = Path.GetDirectoryName(configPath);
+                // ============ 修改：目录自动创建逻辑 ============
+                string directory = System.IO.Path.GetDirectoryName(configPath);
                 if (!Directory.Exists(directory))
                 {
                     Directory.CreateDirectory(directory);
                 }
+                // ==============================================
 
                 File.WriteAllText(configPath, jsonBuilder.ToString());
 

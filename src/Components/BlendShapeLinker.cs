@@ -92,7 +92,11 @@ namespace Cavi.ChillWithAnyone.Components
 
         private void LoadConfiguration()
         {
-            string configPath = Path.Combine(BepInEx.Paths.ConfigPath, "BlendShapeLinker", "blendshape_config.json");
+            // ============ 修改：使用模组目录而非 BepInEx/config ============
+            // 获取模组 DLL 所在目录
+            string pluginPath = System.IO.Path.GetDirectoryName(typeof(BlendShapeLinker).Assembly.Location);
+            string configPath = System.IO.Path.Combine(pluginPath, "blendshape_config.json");
+            // ============================================================
 
             if (!File.Exists(configPath))
             {
@@ -125,7 +129,7 @@ namespace Cavi.ChillWithAnyone.Components
                     }
                 }
 
-                ModLogger.Info($"BlendShapeLinker: ✓ Loaded {_configLookup.Count} blend shape configurations");
+                ModLogger.Info($"BlendShapeLinker: ✓ Loaded {_configLookup.Count} blend shape configurations from {configPath}");
                 ModLogger.Info($"BlendShapeLinker: Mouth Global: {(_config.mouthGlobal.enabled ? "ENABLED" : "DISABLED")}");
                 ModLogger.Info($"BlendShapeLinker: Eye Global: {(_config.eyeGlobal.enabled ? "ENABLED" : "DISABLED")}");
             }
@@ -533,4 +537,4 @@ namespace Cavi.ChillWithAnyone.Components
 
         #endregion
     }
-} 
+}

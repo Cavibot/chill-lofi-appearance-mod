@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Cavi.ChillWithAnyone
 {
-    [BepInPlugin("com.cavi.chillwithanyone", "Chill With Anyone", "0.9.0")]
+    [BepInPlugin("com.cavi.chillwithanyone", "Chill With Anyone", "1.0.0")]
     public class ChillWithAnyonePlugin : BaseUnityPlugin
     {
         // Configuration 
